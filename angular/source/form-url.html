@@ -1,0 +1,11 @@
+<div class="form-group row">
+	<label class="col-sm-1 form-control-label">URL Image </label>
+	<div class="col-sm-3">
+		<input type="text" id="url" name="url" required="required" class="form-control" ng-model="image.name" required> 
+		<span class="help-inline" ng-show="registerProductForm.url.$touched"> Field URL is required</span>
+	</div>
+	<div class="col-sm-1"></div>
+	<div class="col-sm-1"> 
+		<button ng-disabled="!urlGetForm.$valid" type="submit" class="btn btn-primary"> Detect </button>
+	</div>
+</div>

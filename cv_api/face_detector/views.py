@@ -6,19 +6,24 @@ import urllib
 import json
 import cv2
 import os
-
+#from skimage.measure import structural_similarity as ssim
+#import matplotlib.pyplot as plt
 # define the path to the face detector
 FACE_DETECTOR_PATH = "{base_path}/cascades/haarcascade_frontalface_default.xml".format(
 	base_path=os.path.abspath(os.path.dirname(__file__)))
 
+
+#MAKE REFACTOR
 @csrf_exempt
 def detect(request):
-	# initialize the data dictionary to be returned by the request
-	data = {"success": False}
 
-	# check to see if this is a post request
+	# initialize the data to return
+	data = {"success": False}
+	result = False
+	idPerson = 0
+	print(result)
 	if request.method == "POST":
-		# check to see if an image was uploaded
+		
 		if request.FILES.get("image", None) is not None:
 			# grab the uploaded image
 			image = _grab_image(stream=request.FILES["image"])
@@ -31,30 +36,78 @@ def detect(request):
 			if url is None:
 				data["error"] = "No URL provided."
 				return JsonResponse(data)
+	
 
-			# load the image and convert
-			image = _grab_image(url=url)
-			
+			image = cv2.imread(url,0)
+			imagesdb = _get_images_url()
 
-			difference = cv2.subtract(image,image)
+			for image in imagesdb:
+				idPerson = image.person_id
+				urlimg = image.urlimage
+				image = cv2.imread(url,0)
+				imagedb = cv2.imread(urlimg,0)
+				#idPerson = image.person
+				
+				#get image by url
+				differences = cv2.subtract(image,imagedb)
+				result = not np.any(differences)
 
-			result = not np.any(difference) #true images are the same 
+				if result:
+					break	
 
-		# convert the image to grayscale, load the face cascade detector,
-		# and detect faces in the image
-		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-		detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
-		rects = detector.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5,
-			minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
-
-		# construct a list of bounding boxes from the detection
-		rects = [(int(x), int(y), int(x + w), int(y + h)) for (x, y, w, h) in rects]
-
+			#diff = cv2.subtract(image,imaget)
+			#result = not np.any(diff)
 		# update the data dictionary with the faces detected
-		data.update({"num_faces": result, "faces": rects, "success": True})
-
+		data.update({"matching": result , "id": idPerson, "success": True})
 	# return a JSON response
 	return JsonResponse(data)
+
+def _get_images_url():
+	from face_detector.models import Image
+	return Image.objects.all()
+
+
+@csrf_exempt
+def getinfo(request):
+	
+	data = {}
+	idP = request.POST.get("id", None)
+	from face_detector.models import Person
+	p = Person.objects.get(pk=idP)
+	data.update({"name": p.name, "last_name" : p.last_name, "work": p.work,"cellphone": p.cellphone,"street":p.street,"number_house":p.number_house,"colony":p.colony,"postalcode":p.postalcode,"municipality":p.municipality,"state":p.state});
+	return JsonResponse(data);
+
+@csrf_exempt
+def addperson(request):
+
+	data = {"success": True}
+	
+	name = request.POST.get("name", None)
+	last_name = request.POST.get("last_name",None)
+	work = request.POST.get("work",None)
+	cellphone = request.POST.get("cellphone",None)
+	street = request.POST.get("street",None)
+	number_house = request.POST.get("number_house",None)
+	colony = request.POST.get("colony",None)
+	postalcode = request.POST.get("postalcode",None)
+	municipality = request.POST.get("municipality",None)
+	state = request.POST.get("state",None)
+	urlimage = request.POST.get("urlimage",None)
+			
+	from face_detector.models import Person
+	p = Person(name=name,last_name=last_name,work=work,cellphone=cellphone,street=street,number_house=number_house,colony=colony,postalcode=postalcode,municipality=municipality,state=state)
+	p.save()
+
+	if p.id > 0:
+		data.update({"message": "Person was succesfully created"})
+		from face_detector.models import Image
+		m = Image(urlimage=urlimage,hand="der",finger=2,person=p)
+		m.save()
+	else:
+		data.update({"message": "Something is wrong, please contact with administrator"})
+
+	return JsonResponse(data)
+
 
 def _grab_image(path=None, stream=None, url=None):
 	# if the path is not None, then load the image from disk

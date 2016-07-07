@@ -1,0 +1,64 @@
+<div ng-controller="contentController as cntCtrl">	
+	<div class="container">
+			<div class="row alert alert-info " ng-show="showMessage">
+                <label class="col-sm-11" > {{ message }} </label> 
+                <button class="col-sm-1" ng-click="changeStateAlert()" > Close </button>
+		</div>
+	</div>
+	<div ng-show="giveUrl">
+			<p> Welcome to FingerPrint Web, Please enter a name of the image to identify </p>
+			<form name="urlGetForm" ng-submit="urlGetForm.$valid && cntCtrl.save()" novalidate>
+				<form-url></form-url>
+			</form>
+	</div>
+	<div ng-show="formPerson">
+			<form name="personForm" ng-submit="personForm.$valid && cntCtrl.savePerson()" novalidate>
+				<form-person></form-person>
+			</form>
+	</div>
+	<div ng-show="infoPerson">
+	 	<h3 class="success"> User Found </h3>
+		<h3> Personal Information</h3>
+		<div class="row">
+			<label class="col-sm-1"> Name: </label>
+			<input class="col-sm-2" type="text" name="name" value="{{person.name}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Last Name: </label>
+			<input class="col-sm-2" type="text" name="last_name" value="{{person.last_name}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Work: </label>
+			<input class="col-sm-2" type="text" name="work" value="{{person.work}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Cellphone: </label>
+			<input class="col-sm-2" type="text" name="cellphone" value="{{person.cellphone}}" disabled>
+		</div>
+		<h3>Address:</h3>
+		<div class="row">
+			<label class="col-sm-1"> Street: </label>
+			<input class="col-sm-2" type="text" name="street" value="{{person.street}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Number House: </label>
+			<input class="col-sm-2" type="text" name="number_house" value="{{person.number_house}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Colony: </label>
+			<input class="col-sm-2" type="text" name="colony" value="{{person.colony}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Postal Code: </label>
+			<input class="col-sm-2" type="text" name="postalcode" value="{{person.postalcode}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> Municipality: </label>
+			<input class="col-sm-2" type="text" name="municipality" value="{{person.municipality}}" disabled>
+		</div>
+		<div class="row">
+			<label class="col-sm-1"> State: </label>
+			<input class="col-sm-2" type="text" name="state" value="{{person.state}}" disabled>
+		</div>
+	</div>
+</div>

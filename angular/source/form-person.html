@@ -1,0 +1,79 @@
+<p> Sorry, the fingerprint is not associated with people in database, please send the data to register.</p>
+<div class="form-group row">
+    <label class="col-sm-1 form-control-label"> Name </label>
+    <div class="col-sm-3">
+        <input type="text" id="name" name="name" required="required" class="form-control" ng-pattern="/^(\D)+$/"  ng-model="person.name"  required>
+        <p class="alert red-warning" ng-show="personForm.name.$error.pattern">Just type letters</p>
+        <span class="help-inline red-warning" ng-show="personForm.name.$invalid && personForm.name.$touched" > Field name is required</span>
+    </div>
+    <div class="col-sm-1"></div>
+    <label class="col-sm-1 form-control-label"> Last Name </label>
+    <div class="col-sm-3">
+        <input type="text" id="last_name" name="last_name" required="required" class="form-control" ng-pattern="/^(\D)+$/"  ng-model="person.last_name"  required>
+        <p class="alert red-warning" ng-show="personForm.last_name.$error.pattern">Just type letters</p>
+        <span class="help-inline red-warning" ng-show="personForm.last_name.$invalid && personForm.last_name.$touched"> Field last_name is required</span>  
+    </div>               
+</div>
+<h4>Personal Information</h4>
+<div class="form-group row">
+    <label class="col-sm-1 form-control-label"> Street </label>
+    <div class="col-sm-3">
+        <input type="text" id="street" name="street" required="required" class="form-control" ng-model="person.street"  required>
+        <span class="help-inline red-warning" ng-show="personForm.street.$invalid && personForm.street.$touched" > Field job is required</span>
+    </div>
+    <div class="col-sm-1"></div>
+    <label class="col-sm-1 form-control-label"> Cellphone </label>
+    <div class="col-sm-3">
+        <input type="text" id="cellphone" name="cellphone" required="required" class="form-control" ng-pattern="/^\d+$/"  ng-model="person.cellphone"  required>
+        <p class="alert red-warning" ng-show="personForm.cellphone.$error.pattern">Just type numbers</p>
+        <span class="help-inline red-warning" ng-show="personForm.cellphone.$invalid && personForm.cellphone.$touched"> Field cellphone is required</span>  
+    </div>               
+</div>
+<div class="form-group row">
+    <label class="col-sm-1 form-control-label"> Job </label>
+    <div class="col-sm-3">
+        <input type="text" id="work" name="work" required="required" class="form-control" ng-model="person.work"  required>
+        <span class="help-inline red-warning" ng-show="personForm.work.$invalid && personForm.work.$touched" > Field job is required</span>
+    </div>
+    <div class="col-sm-1"></div>
+    <label class="col-sm-1 form-control-label"> Number House </label>
+    <div class="col-sm-3">
+        <input type="text" id="number_house" name="number_house" required="required" class="form-control" ng-pattern="/^\d+$/"  ng-model="person.number_house"  required>
+        <p class="alert red-warning" ng-show="personForm.number_house.$error.pattern">Just type numbers</p>
+        <span class="help-inline red-warning" ng-show="personForm.number_house.$invalid && personForm.number_house.$touched"> Field number_house is required</span>  
+    </div>               
+</div>
+<div class="form-group row">
+    <label class="col-sm-1 form-control-label"> Colony </label>
+    <div class="col-sm-3">
+        <input type="text" id="colony" name="colony" required="required" class="form-control" ng-model="person.colony" ng-pattern="/^(\D)+$/"  required>
+        <p class="alert red-warning" ng-show="personForm.colony.$error.pattern">Just type letters</p>
+        <span class="help-inline red-warning" ng-show="personForm.colony.$invalid && personForm.colony.$touched" > Field colony is required
+        </span>
+    </div>
+    <div class="col-sm-1"></div>
+    <label class="col-sm-1 form-control-label"> Postal Code </label>
+    <div class="col-sm-3">
+        <input type="text" id="postalcode" name="postalcode" required="required" class="form-control" ng-pattern="/^\d+$/"  ng-model="person.postalcode"  required>
+        <p class="alert red-warning" ng-show="personForm.postalcode.$error.pattern">Just type numbers</p>
+        <span class="help-inline red-warning" ng-show="personForm.postalcode.$invalid && personForm.postalcode.$touched"> Field postalcode is required</span>  
+    </div>               
+</div>
+<div class="form-group row">
+    <label class="col-sm-1 form-control-label"> Municipality </label>
+    <div class="col-sm-3">
+        <input type="text" id="municipality" name="municipality" required="required" class="form-control" ng-model="person.municipality" ng-pattern="/^(\D)+$/"  required>
+        <p class="alert red-warning" ng-show="personForm.municipality.$error.pattern">Just type letters</p>
+        <span class="help-inline red-warning" ng-show="personForm.municipality.$invalid && personForm.municipality.$touched" > Field municipality is required
+        </span>
+    </div>
+    <div class="col-sm-1"></div>
+    <label class="col-sm-1 form-control-label"> State </label>
+    <div class="col-sm-3">
+        <input type="text" id="state" name="state" required="required" class="form-control" ng-model="person.state" ng-pattern="/^(\D)+$/"  required>
+        <p class="alert red-warning" ng-show="personForm.state.$error.pattern">Just type letters</p>
+        <span class="help-inline red-warning" ng-show="personForm.state.$invalid && personForm.state.$touched" > Field state is required
+        </span>
+    </div> 
+</div>
+<button ng-disabled="!personForm.$valid" type="submit" class="btn btn-primary"> Register</button>

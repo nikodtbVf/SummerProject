@@ -6,6 +6,6 @@ import cv2
 url = "http://localhost:8000/face_detection/detect/"
 
 # use our face detection API to find faces in images via image URL
- fingerprint = {"url": "http://www.pyimagesearch.com/wp-content/uploads/2015/05/obama.jpg"}
-r = requests.post(url, data=fingerprint).json()
-print "obama.jpg: {}".format(r)
+payload = {"url": "templateimagen.jpg", "urltwo" : "templateimagentwooo.jpg"}
+r = requests.post(url, data=payload).json()
+print "{}".format(r)
