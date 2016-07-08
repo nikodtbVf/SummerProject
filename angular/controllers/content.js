@@ -9,7 +9,7 @@ app.controller('contentController', function($scope, $http, API_URL) {
     $scope.showMessage = false;
     $scope.infoPerson = false
     
-    this.save = function() {
+    $scope.saveFake = function() {
         $scope.infoPerson = false;
         $scope.person = {}
         $scope.lastUrl = $scope.image.name
@@ -17,10 +17,29 @@ app.controller('contentController', function($scope, $http, API_URL) {
  		$http({
             method: 'POST',
             url: url,
-            data:$.param({ url : $scope.image.name, urltwo: "102_1.tif"}),
+            data:$.param({ url : $scope.image.name }),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(response) {
-           if(response.success)
+          
+        }).error(function(response) {
+            console.log(response)
+        });  
+	}
+
+    $scope.saveImage = function() {
+        $scope.infoPerson = false;
+        $scope.person = {}
+        $scope.lastUrl = $scope.image.name
+        console.log($scope.image.name)
+        var url = API_URL + "image/" 
+        $http({
+            method: 'POST',
+            url: url,
+            data:$.param({ url : $scope.image.name}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(response) {
+             
+             if(response.success)
                 if(response["matching"]){
                     var id = parseInt(response.id)
                     $scope.showData(id);
@@ -32,8 +51,8 @@ app.controller('contentController', function($scope, $http, API_URL) {
         }).error(function(response) {
             console.log(response)
         });  
-	}
-
+    }            
+   
     $scope.showData = function(idP){
         $scope.showInfo = true  
         var url = API_URL + "getInfo/"

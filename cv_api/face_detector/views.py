@@ -1,6 +1,8 @@
 # import the necessary packages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from scipy.spatial import distance as dist
+import matplotlib.pyplot as plt
 import numpy as np
 import urllib
 import json
@@ -132,3 +134,66 @@ def _grab_image(path=None, stream=None, url=None):
  
 	# return the image
 	return image
+
+@csrf_exempt
+def image(request):
+	
+	data = {"success": False}
+	index = {}
+	indexImg = {}
+	images = {}
+	imagesImg = {}
+	urlimage = "smt"
+	minimo = 1.1
+	diferencia = 0 
+	idPerson = 0
+
+	# grab the URL from the request
+	url = request.POST.get("url", None)
+	image = cv2.imread(url,1)
+	imagesImg[url] = cv2.imread(url,1)
+	#cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+	#EXTRACT COLOR 
+	hist = cv2.calcHist([image],[0,1,2],None,[8,8,8],[0,256,0,256,0,256])
+	hist = cv2.normalize(hist).flatten()
+	indexImg[url] = hist	
+
+	#get al url in database
+	imagesdb = _get_images_url()
+
+	for image in imagesdb:
+		urlimg = image.urlimage
+		idPerson = image.person_id
+		image = cv2.imread(urlimg)
+		images[urlimage] = cv2.imread(urlimg,1)
+		#EXTRACT COLOR 
+		hist = cv2.calcHist([image],[0,1,2],None,[8,8,8],[0,256,0,256,0,256])
+		hist = cv2.normalize(hist).flatten()
+		index[urlimage] = hist
+
+		# initialize OpenCV methods for histogram comparison
+		OPENCV_METHODS = (
+	 		("Correlation", cv2.cv.CV_COMP_CORREL),
+			("Chi-Squared", cv2.cv.CV_COMP_CHISQR),
+			("Intersection", cv2.cv.CV_COMP_INTERSECT), 
+			("Hellinger", cv2.cv.CV_COMP_BHATTACHARYYA))		
+		
+		for(methodName,method) in OPENCV_METHODS:
+
+			results = {}
+			reverse = False
+			if methodName in ("Correlation"):
+				d = cv2.compareHist(indexImg[url],hist,method)
+				print(d)
+				diferencia = 1 - d
+				if diferencia < minimo:
+					minimo = diferencia
+				 		 	
+	if minimo < 0.00005:
+		result = True
+		data.update({"matching": result , "id": idPerson, "success": True})
+	else:
+		result = False
+		data.update({"matching": result , "id": 0, "success": True})
+
+	return JsonResponse(data)

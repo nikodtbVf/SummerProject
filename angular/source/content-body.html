@@ -7,7 +7,7 @@
 	</div>
 	<div ng-show="giveUrl">
 			<p> Welcome to FingerPrint Web, Please enter a name of the image to identify </p>
-			<form name="urlGetForm" ng-submit="urlGetForm.$valid && cntCtrl.save()" novalidate>
+			<form name="urlGetForm" ng-submit="urlGetForm.$valid && saveImage()" novalidate>
 				<form-url></form-url>
 			</form>
 	</div>
@@ -61,4 +61,5 @@
 			<input class="col-sm-2" type="text" name="state" value="{{person.state}}" disabled>
 		</div>
 	</div>
+	<button ng-click="saveFake()" class="btn btn-primary"> Holi</button>
 </div>
